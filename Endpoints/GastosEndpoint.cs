@@ -7,8 +7,8 @@ public static class GastosEndpoints
 {
     public static void MapGastosEndpoints(this WebApplication app)
     {
-        app.MapGet("/gastos", async (GastosRepository repo) =>
-            Results.Ok(await repo.ObtenerGastos()));
+        app.MapGet("/gastos", async (int year, int month, GastosRepository repo) =>
+            Results.Ok(await repo.ObtenerGastos(year, month)));
 
         app.MapGet("/gastos/{id}", async (int id, GastosRepository repo) =>
         {

@@ -13,22 +13,10 @@ public class GastosRepository
         _conexionDB = conexionDB;
     }
 
-    // public async Task<IEnumerable<Gasto>> ObtenerGastos()
-    // {
-    //     using var con = _conexionDB.Abrir();
-    //     var gastos = await con.QueryAsync<Gasto>("""
-    //      SELECT id AS Id, fecha_hora AS FechaHora, descripcion AS Descripcion, importe AS Importe,
-    //              moneda_id AS MonedaId, categoria_id AS CategoriaId, created_at AS CreatedAt, updated_at AS UpdatedAt
-    //         FROM gastos
-    //         ORDER BY fecha_hora DESC
-    // """);
-    //     return gastos;
-    // }
-
-       public async Task<IEnumerable<GastoResponse>> ObtenerGastos()
-    {
-        using var con = _conexionDB.Abrir();
-        var gastos = await con.QueryAsync<GastoResponse>("""
+public async Task<IEnumerable<GastoResponse>> ObtenerGastos(int year, int month)
+{
+    using var con = _conexionDB.Abrir();
+    return await con.QueryAsync<GastoResponse>("""
         SELECT t1.id AS Id, fecha_hora AS DateTime, t1.descripcion AS Description, importe AS Amount, t3.nombre as Category, t3.icono as CategoryIcon,
                t2.codigo as Currency, t2.simbolo as CurrencySymbol, moneda_id AS CurrencyId, categoria_id AS CategoryId, t1.created_at AS CreatedAt, t1.updated_at AS UpdatedAt
             FROM gastos as t1
@@ -36,10 +24,11 @@ public class GastosRepository
                 on t1.moneda_id = t2.id 
             INNER JOIN categorias as t3
                 on t1.categoria_id = t3.id
-            ORDER BY fecha_hora DESC
-    """);
-        return gastos;
-    }
+        WHERE strftime('%Y', t1.fecha_hora) = @Year
+          AND strftime('%m', t1.fecha_hora) = @Month
+        ORDER BY fecha_hora DESC
+        """, new { Year = year.ToString(), Month = month.ToString("D2") });
+}
 
     public async Task AgregarGasto(Gasto gasto)
     {
@@ -78,7 +67,6 @@ public class GastosRepository
                 ON t1.categoria_id = t3.id
             WHERE t1.id = @Id
             ORDER BY fecha_hora DESC
-
     """;
         var gasto = await con.QueryFirstOrDefaultAsync<GastoResponse>(sql, new { Id = id });
         return gasto;
