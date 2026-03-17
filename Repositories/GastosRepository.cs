@@ -13,13 +13,29 @@ public class GastosRepository
         _conexionDB = conexionDB;
     }
 
-    public async Task<IEnumerable<Gasto>> ObtenerGastos()
+    // public async Task<IEnumerable<Gasto>> ObtenerGastos()
+    // {
+    //     using var con = _conexionDB.Abrir();
+    //     var gastos = await con.QueryAsync<Gasto>("""
+    //      SELECT id AS Id, fecha_hora AS FechaHora, descripcion AS Descripcion, importe AS Importe,
+    //              moneda_id AS MonedaId, categoria_id AS CategoriaId, created_at AS CreatedAt, updated_at AS UpdatedAt
+    //         FROM gastos
+    //         ORDER BY fecha_hora DESC
+    // """);
+    //     return gastos;
+    // }
+
+       public async Task<IEnumerable<GastoResponse>> ObtenerGastos()
     {
         using var con = _conexionDB.Abrir();
-        var gastos = await con.QueryAsync<Gasto>("""
-         SELECT id AS Id, fecha_hora AS FechaHora, descripcion AS Descripcion, importe AS Importe,
-                 moneda_id AS MonedaId, categoria_id AS CategoriaId, created_at AS CreatedAt, updated_at AS UpdatedAt
-            FROM gastos
+        var gastos = await con.QueryAsync<GastoResponse>("""
+        SELECT t1.id AS Id, fecha_hora AS FechaHora, t1.descripcion AS Descripcion, importe AS Importe, t3.nombre as Category, t3.icono as CategoryIcon,
+               t2.codigo as Currency, t2.simbolo as CurrencySymbol, moneda_id AS MonedaId, categoria_id AS CategoriaId, t1.created_at AS CreatedAt, t1.updated_at AS UpdatedAt
+            FROM gastos as t1
+            INNER JOIN monedas as t2
+                on t1.moneda_id = t2.id 
+            INNER JOIN categorias as t3
+                on t1.categoria_id = t3.id
             ORDER BY fecha_hora DESC
     """);
         return gastos;
