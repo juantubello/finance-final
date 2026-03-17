@@ -15,7 +15,15 @@ public class CategoriasRepository
     public async Task<IEnumerable<Categorias>> ObtenerCategorias()
     {
         using var con = _conexionDB.Abrir();
-        var categorias = await con.QueryAsync<Categorias>("SELECT * FROM categorias");
+         var sql = """
+             SELECT id as CategoryId, 
+                    nombre as CategoryName,
+                    descripcion as CategoryDescription,
+                    icono as CategoryIcon
+               FROM categorias
+               WHERE activa = 1
+    """;
+        var categorias = await con.QueryAsync<Categorias>(sql);
         return categorias;
     }
 
