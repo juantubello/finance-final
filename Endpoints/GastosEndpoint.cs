@@ -19,6 +19,9 @@ public static class GastosEndpoints
         app.MapGet("/gastosByCategories", async (int year, int month, GastosRepository repo) =>
             Results.Ok(await repo.GetGastosByCategories(year, month)));
 
+        app.MapGet("/gastos/categorias/rango", async (int yearFrom, int monthFrom, int yearTo, int monthTo, GastosRepository repo) =>
+        Results.Ok(await repo.GetGastosByCategoriesRange(yearFrom, monthFrom, yearTo, monthTo)));
+
         app.MapPost("/gastos", async (Gasto gasto, GastosRepository repo) =>
         {
             await repo.AgregarGasto(gasto);

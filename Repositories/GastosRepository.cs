@@ -90,7 +90,6 @@ public class GastosRepository
     var categories = await GetCategories();
     foreach (var gasto in gastos)
     {
-
         var currency = currencies.FirstOrDefault(g => g.CurrencyId == gasto.CurrencyId );
         if (currency is null) continue;
 
@@ -145,4 +144,86 @@ public class GastosRepository
         var categories = await con.QueryAsync<Categories>(sql);
         return categories;
     }
+
+public async Task<GastosByCategoryRangeResponse> GetGastosByCategoriesRange(int yearFrom, int monthFrom, int yearTo, int monthTo)
+{
+    var response = new GastosByCategoryRangeResponse();
+
+    using var con = _conexionDB.Abrir();
+    var sql = """
+        SELECT id, fecha_hora as Datetime, descripcion as Description, importe as Amount, moneda_id as CurrencyId, categoria_id as CategoryId
+        FROM gastos
+        WHERE (strftime('%Y%m', fecha_hora) >= @From
+          AND strftime('%Y%m', fecha_hora) <= @To)
+        ORDER BY fecha_hora DESC
+        """;
+
+    var from = $"{yearFrom}{monthFrom:D2}";
+    var to   = $"{yearTo}{monthTo:D2}";
+
+    var gastos     = await con.QueryAsync<Gasto>(sql, new { From = from, To = to });
+    var currencies = await GetCurrencies();
+    var categories = await GetCategories();
+
+    foreach (var gasto in gastos)
+    {
+        var currency = currencies.FirstOrDefault(g => g.CurrencyId == gasto.CurrencyId);
+        if (currency is null) continue;
+
+        var category = categories.FirstOrDefault(c => c.CategoryId == gasto.CategoryId);
+        if (category is null) continue;
+
+        // --- TOTALS ---
+        var total = response.Totals.FirstOrDefault(t => t.CategoryId == gasto.CategoryId && t.CurrencyId == gasto.CurrencyId);
+        if (total is null)
+        {
+            response.Totals.Add(new GastosByCategoryResponse
+            {
+                CategoryId          = gasto.CategoryId ?? 0,
+                CategoryName        = category.CategoryName,
+                CategoryDescription = category.CategoryDescription,
+                CategoryIcon        = category.CategoryIcon,
+                Amount              = gasto.Amount,
+                CurrencyId          = gasto.CurrencyId,
+                Currency            = currency.Currency,
+                CurrencySymbol      = currency.CurrencySymbol
+            });
+        }
+        else
+        {
+            total.Amount += gasto.Amount;
+        }
+
+        // --- BY MONTH ---
+        var gastoDate = gasto.DateTime;
+        var monthlyEntry = response.ByMonth.FirstOrDefault(m => m.Year == gastoDate.Year && m.Month == gastoDate.Month);
+        if (monthlyEntry is null)
+        {
+            monthlyEntry = new MonthlyGastos { Year = gastoDate.Year, Month = gastoDate.Month };
+            response.ByMonth.Add(monthlyEntry);
+        }
+
+        var monthlyCategory = monthlyEntry.Categories.FirstOrDefault(c => c.CategoryId == gasto.CategoryId && c.CurrencyId == gasto.CurrencyId);
+        if (monthlyCategory is null)
+        {
+            monthlyEntry.Categories.Add(new GastosByCategoryResponse
+            {
+                CategoryId          = gasto.CategoryId ?? 0,
+                CategoryName        = category.CategoryName,
+                CategoryDescription = category.CategoryDescription,
+                CategoryIcon        = category.CategoryIcon,
+                Amount              = gasto.Amount,
+                CurrencyId          = gasto.CurrencyId,
+                Currency            = currency.Currency,
+                CurrencySymbol      = currency.CurrencySymbol
+            });
+        }
+        else
+        {
+            monthlyCategory.Amount += gasto.Amount;
+        }
+    }
+
+    return response;
+}
 }

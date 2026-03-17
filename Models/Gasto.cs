@@ -56,3 +56,15 @@ public class GastosByCategoryResponse
     public string CurrencySymbol { get; set; } = string.Empty;
 
 }
+public class GastosByCategoryRangeResponse
+{
+    public List<GastosByCategoryResponse> Totals { get; set; } = new();
+    public List<MonthlyGastos> ByMonth { get; set; } = new();
+}
+
+public class MonthlyGastos
+{
+    public int Year { get; set; }
+    public int Month { get; set; }
+    public List<GastosByCategoryResponse> Categories { get; set; } = new();
+}
