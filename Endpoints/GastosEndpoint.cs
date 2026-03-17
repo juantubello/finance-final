@@ -16,6 +16,9 @@ public static class GastosEndpoints
             return gasto is null ? Results.NotFound() : Results.Ok(gasto);
         });
 
+        app.MapGet("/gastosByCategories", async (int year, int month, GastosRepository repo) =>
+            Results.Ok(await repo.GetGastosByCategories(year, month)));
+
         app.MapPost("/gastos", async (Gasto gasto, GastosRepository repo) =>
         {
             await repo.AgregarGasto(gasto);
