@@ -10,10 +10,12 @@ var ruta = builder.Configuration["DatabasePath"]
 builder.Services.AddSingleton(new ConexionDB(ruta));
 builder.Services.AddScoped<GastosRepository>();
 builder.Services.AddScoped<CategoriasRepository>();
+builder.Services.AddScoped<MonedaRepository>();
 
 var app = builder.Build();
 
 app.MapGastosEndpoints();
 app.MapCategoriasEndpoints();
+app.MapMonedasEndpoints();
 
 app.Run();

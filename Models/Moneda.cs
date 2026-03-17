@@ -2,8 +2,8 @@ namespace FinanzasApp.Models;
 
 public class Moneda
 {
-    public int Id { get; set; }
-    public string Codigo { get; set; } = string.Empty;
-    public string Nombre { get; set; } = string.Empty;
-    public string Simbolo { get; set; } = string.Empty;
+    public int CurrencyId { get; set; }
+    public string Currency { get; set; } = string.Empty;
+    public string CurrencyDescription { get; set; } = string.Empty;
+    public string CurrencySymbol { get; set; } = string.Empty;
 }
