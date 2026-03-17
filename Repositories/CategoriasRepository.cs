@@ -16,10 +16,10 @@ public class CategoriasRepository
     {
         using var con = _conexionDB.Abrir();
          var sql = """
-             SELECT id as CategoryId, 
-                    nombre as CategoryName,
+             SELECT id          as CategoryId, 
+                    nombre      as CategoryName,
                     descripcion as CategoryDescription,
-                    icono as CategoryIcon
+                    icono       as CategoryIcon
                FROM categorias
                WHERE activa = 1
     """;
