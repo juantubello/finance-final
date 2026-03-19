@@ -16,10 +16,11 @@ public class CategoriasRepository
     {
         using var con = _conexionDB.Abrir();
          var sql = """
-             SELECT id          as CategoryId, 
+             SELECT id          as CategoryId,
                     nombre      as CategoryName,
                     descripcion as CategoryDescription,
-                    icono       as CategoryIcon
+                    icono       as CategoryIcon,
+                    color       as CategoryColor
                FROM categorias
                WHERE activa = 1
     """;
@@ -30,13 +31,14 @@ public class CategoriasRepository
     public async Task AgregarCategoria(Categorias categoria)
     {
         using var con = _conexionDB.Abrir();
-        var sql = @"INSERT INTO categorias (nombre, descripcion, icono, activa, created_at, updated_at)
-                    VALUES (@Nombre, @Descripcion, @Icono, 1, @Now, @Now)";
+        var sql = @"INSERT INTO categorias (nombre, descripcion, icono, color, activa, created_at, updated_at)
+                    VALUES (@Nombre, @Descripcion, @Icono, @Color, 1, @Now, @Now)";
         await con.ExecuteAsync(sql, new
         {
             Nombre      = categoria.CategoryName,
             Descripcion = categoria.CategoryDescription,
             Icono       = categoria.CategoryIcon,
+            Color       = categoria.CategoryColor,
             Now         = DateTime.UtcNow
         });
     }
@@ -45,13 +47,14 @@ public class CategoriasRepository
     {
         using var con = _conexionDB.Abrir();
         var sql = @"UPDATE categorias SET nombre = @Nombre, descripcion = @Descripcion, icono = @Icono,
-                    updated_at = @Now WHERE id = @Id";
+                    color = @Color, updated_at = @Now WHERE id = @Id";
         await con.ExecuteAsync(sql, new
         {
             Id          = categoria.CategoryId,
             Nombre      = categoria.CategoryName,
             Descripcion = categoria.CategoryDescription,
             Icono       = categoria.CategoryIcon,
+            Color       = categoria.CategoryColor,
             Now         = DateTime.UtcNow
         });
     }

@@ -11,6 +11,8 @@ builder.Services.AddSingleton(new ConexionDB(ruta));
 builder.Services.AddScoped<GastosRepository>();
 builder.Services.AddScoped<CategoriasRepository>();
 builder.Services.AddScoped<MonedaRepository>();
+builder.Services.AddScoped<LabelsRepository>();
+builder.Services.AddScoped<CategoryRulesRepository>();
 
 builder.Services.AddCors(options =>
 {
@@ -25,5 +27,7 @@ app.UseCors();
 app.MapGastosEndpoints();
 app.MapCategoriasEndpoints();
 app.MapMonedasEndpoints();
+app.MapLabelsEndpoints();
+app.MapCategoryRulesEndpoints();
 
 app.Run();

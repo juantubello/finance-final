@@ -13,6 +13,11 @@ public class ConexionDB
 
     public SqliteConnection Abrir()
     {
-        return new SqliteConnection(_connectionString);
+        var con = new SqliteConnection(_connectionString);
+        con.Open();
+        using var cmd = con.CreateCommand();
+        cmd.CommandText = "PRAGMA foreign_keys = ON";
+        cmd.ExecuteNonQuery();
+        return con;
     }
 }

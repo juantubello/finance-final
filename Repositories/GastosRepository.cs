@@ -16,18 +16,37 @@ public class GastosRepository
     public async Task<IEnumerable<GastoResponse>> ObtenerGastos(int year, int month)
     {
         using var con = _conexionDB.Abrir();
-        return await con.QueryAsync<GastoResponse>("""
+        var gastos = (await con.QueryAsync<GastoResponse>("""
         SELECT t1.id AS Id, fecha_hora AS DateTime, t1.descripcion AS Description, importe AS Amount, t3.nombre as Category, t3.icono as CategoryIcon,
                t2.codigo as Currency, t2.simbolo as CurrencySymbol, moneda_id AS CurrencyId, categoria_id AS CategoryId, t1.created_at AS CreatedAt, t1.updated_at AS UpdatedAt
             FROM gastos as t1
             INNER JOIN monedas as t2
-                on t1.moneda_id = t2.id 
+                on t1.moneda_id = t2.id
             INNER JOIN categorias as t3
                 on t1.categoria_id = t3.id
         WHERE strftime('%Y', t1.fecha_hora) = @Year
           AND strftime('%m', t1.fecha_hora) = @Month
         ORDER BY fecha_hora DESC
-        """, new { Year = year.ToString(), Month = month.ToString("D2") });
+        """, new { Year = year.ToString(), Month = month.ToString("D2") })).ToList();
+
+        if (gastos.Count > 0)
+        {
+            var ids = gastos.Select(g => g.Id).ToList();
+            var labels = await con.QueryAsync<(int GastoId, int Id, string Name)>("""
+                SELECT gl.gasto_id, l.id, l.name
+                FROM labels l
+                INNER JOIN gasto_labels gl ON gl.label_id = l.id
+                WHERE gl.gasto_id IN @Ids
+                """, new { Ids = ids });
+
+            var labelsPorGasto = labels.GroupBy(l => l.GastoId)
+                .ToDictionary(g => g.Key, g => g.Select(l => new Label { Id = l.Id, Name = l.Name }).ToList());
+
+            foreach (var gasto in gastos)
+                if (labelsPorGasto.TryGetValue(gasto.Id, out var ls)) gasto.Labels = ls;
+        }
+
+        return gastos;
     }
 
     public async Task AgregarGasto(Gasto gasto)
@@ -74,19 +93,28 @@ public class GastosRepository
     public async Task<GastoResponse?> ObtenerGastoPorId(int id)
     {
         using var con = _conexionDB.Abrir();
-        // var sql = "SELECT * FROM gastos WHERE Id = @Id";
-        var sql = """
+        var gasto = await con.QueryFirstOrDefaultAsync<GastoResponse>("""
         SELECT t1.id AS Id, fecha_hora AS DateTime, t1.descripcion AS Description, importe AS Amount, t3.nombre as Category, t3.icono as CategoryIcon,
                t2.codigo as Currency, t2.simbolo as CurrencySymbol, moneda_id AS CurrencyId, categoria_id AS CategoryId, t1.created_at AS CreatedAt, t1.updated_at AS UpdatedAt
             FROM gastos as t1
             INNER JOIN monedas as t2
-                ON t1.moneda_id = t2.id 
+                ON t1.moneda_id = t2.id
             INNER JOIN categorias as t3
                 ON t1.categoria_id = t3.id
             WHERE t1.id = @Id
-            ORDER BY fecha_hora DESC
-    """;
-        var gasto = await con.QueryFirstOrDefaultAsync<GastoResponse>(sql, new { Id = id });
+    """, new { Id = id });
+
+        if (gasto is not null)
+        {
+            var labels = await con.QueryAsync<Label>("""
+                SELECT l.id AS Id, l.name AS Name
+                FROM labels l
+                INNER JOIN gasto_labels gl ON gl.label_id = l.id
+                WHERE gl.gasto_id = @Id
+                """, new { Id = id });
+            gasto.Labels = labels.ToList();
+        }
+
         return gasto;
     }
 
