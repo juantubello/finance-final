@@ -33,17 +33,35 @@ public class GastosRepository
     public async Task AgregarGasto(Gasto gasto)
     {
         using var con = _conexionDB.Abrir();
-        var sql = @"INSERT INTO gastos (FechaHora, Descripcion, Importe, MonedaId, CategoriaId, CreatedAt, UpdatedAt) 
+        var sql = @"INSERT INTO gastos (fecha_hora, descripcion, importe, moneda_id, categoria_id, created_at, updated_at)
                     VALUES (@FechaHora, @Descripcion, @Importe, @MonedaId, @CategoriaId, @CreatedAt, @UpdatedAt)";
-        await con.ExecuteAsync(sql, gasto);
+        await con.ExecuteAsync(sql, new
+        {
+            FechaHora   = gasto.DateTime,
+            Descripcion = gasto.Description,
+            Importe     = gasto.Amount,
+            MonedaId    = gasto.CurrencyId,
+            CategoriaId = gasto.CategoryId,
+            CreatedAt   = DateTime.UtcNow,
+            UpdatedAt   = DateTime.UtcNow
+        });
     }
 
     public async Task ActualizarGasto(Gasto gasto)
     {
         using var con = _conexionDB.Abrir();
-        var sql = @"UPDATE gastos SET FechaHora = @FechaHora, Descripcion = @Descripcion, Importe = @Importe, 
-                    MonedaId = @MonedaId, CategoriaId = @CategoriaId, UpdatedAt = @UpdatedAt WHERE Id = @Id";
-        await con.ExecuteAsync(sql, gasto);
+        var sql = @"UPDATE gastos SET fecha_hora = @FechaHora, descripcion = @Descripcion, importe = @Importe,
+                    moneda_id = @MonedaId, categoria_id = @CategoriaId, updated_at = @UpdatedAt WHERE id = @Id";
+        await con.ExecuteAsync(sql, new
+        {
+            Id          = gasto.Id,
+            FechaHora   = gasto.DateTime,
+            Descripcion = gasto.Description,
+            Importe     = gasto.Amount,
+            MonedaId    = gasto.CurrencyId,
+            CategoriaId = gasto.CategoryId,
+            UpdatedAt   = DateTime.UtcNow
+        });
     }
 
     public async Task EliminarGasto(int id)

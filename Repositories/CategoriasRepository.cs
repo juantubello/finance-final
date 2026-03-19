@@ -30,23 +30,36 @@ public class CategoriasRepository
     public async Task AgregarCategoria(Categorias categoria)
     {
         using var con = _conexionDB.Abrir();
-        var sql = @"INSERT INTO categorias (Nombre, Descripcion, Icono, Activa, CreatedAt, UpdatedAt) 
-                    VALUES (@Nombre, @Descripcion, @Icono, @Activa, @CreatedAt, @UpdatedAt)";
-        await con.ExecuteAsync(sql, categoria);
+        var sql = @"INSERT INTO categorias (nombre, descripcion, icono, activa, created_at, updated_at)
+                    VALUES (@Nombre, @Descripcion, @Icono, 1, @Now, @Now)";
+        await con.ExecuteAsync(sql, new
+        {
+            Nombre      = categoria.CategoryName,
+            Descripcion = categoria.CategoryDescription,
+            Icono       = categoria.CategoryIcon,
+            Now         = DateTime.UtcNow
+        });
     }
 
     public async Task ActualizarCategoria(Categorias categoria)
     {
         using var con = _conexionDB.Abrir();
-        var sql = @"UPDATE categorias SET Nombre = @Nombre, Descripcion = @Descripcion, Icono = @Icono, 
-                    Activa = @Activa, UpdatedAt = @UpdatedAt WHERE Id = @Id";
-        await con.ExecuteAsync(sql, categoria);
+        var sql = @"UPDATE categorias SET nombre = @Nombre, descripcion = @Descripcion, icono = @Icono,
+                    updated_at = @Now WHERE id = @Id";
+        await con.ExecuteAsync(sql, new
+        {
+            Id          = categoria.CategoryId,
+            Nombre      = categoria.CategoryName,
+            Descripcion = categoria.CategoryDescription,
+            Icono       = categoria.CategoryIcon,
+            Now         = DateTime.UtcNow
+        });
     }
 
     public async Task EliminarCategoria(int id)
     {
         using var con = _conexionDB.Abrir();
-        var sql = "DELETE FROM categorias WHERE Id = @Id";
+        var sql = "DELETE FROM categorias WHERE id = @Id";
         await con.ExecuteAsync(sql, new { Id = id });
     }
 

@@ -12,7 +12,15 @@ builder.Services.AddScoped<GastosRepository>();
 builder.Services.AddScoped<CategoriasRepository>();
 builder.Services.AddScoped<MonedaRepository>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+        policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+});
+
 var app = builder.Build();
+
+app.UseCors();
 
 app.MapGastosEndpoints();
 app.MapCategoriasEndpoints();
