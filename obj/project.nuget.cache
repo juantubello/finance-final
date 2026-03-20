@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "T8kup80RJ8U=",
+  "dgSpecHash": "DZw/h8Jezhs=",
   "success": true,
-  "projectFilePath": "/Users/juan/Desktop/finance_final/FinanzasApp/FinanzasApp.csproj",
+  "projectFilePath": "/Users/juan/Desktop/PI_FINANCE/backend/FinanzasApp/FinanzasApp.csproj",
   "expectedPackageFiles": [
     "/Users/juan/.nuget/packages/dapper/2.1.72/dapper.2.1.72.nupkg.sha512",
     "/Users/juan/.nuget/packages/microsoft.data.sqlite/10.0.5/microsoft.data.sqlite.10.0.5.nupkg.sha512",
@@ -18,9 +18,9 @@
       "code": "NU1510",
       "level": "Warning",
       "message": "PackageReference Microsoft.Extensions.Configuration.Json will not be pruned. Consider removing this package from your dependencies, as it is likely unnecessary.",
-      "projectPath": "/Users/juan/Desktop/finance_final/FinanzasApp/FinanzasApp.csproj",
+      "projectPath": "/Users/juan/Desktop/PI_FINANCE/backend/FinanzasApp/FinanzasApp.csproj",
       "warningLevel": 1,
-      "filePath": "/Users/juan/Desktop/finance_final/FinanzasApp/FinanzasApp.csproj",
+      "filePath": "/Users/juan/Desktop/PI_FINANCE/backend/FinanzasApp/FinanzasApp.csproj",
       "libraryId": "Microsoft.Extensions.Configuration.Json",
       "targetGraphs": [
         "net10.0"

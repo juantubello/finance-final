@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/juan/Desktop/finance_final/FinanzasApp/FinanzasApp.csproj": {}
+    "/Users/juan/Desktop/PI_FINANCE/backend/FinanzasApp/FinanzasApp.csproj": {}
   },
   "projects": {
-    "/Users/juan/Desktop/finance_final/FinanzasApp/FinanzasApp.csproj": {
+    "/Users/juan/Desktop/PI_FINANCE/backend/FinanzasApp/FinanzasApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/juan/Desktop/finance_final/FinanzasApp/FinanzasApp.csproj",
+        "projectUniqueName": "/Users/juan/Desktop/PI_FINANCE/backend/FinanzasApp/FinanzasApp.csproj",
         "projectName": "FinanzasApp",
-        "projectPath": "/Users/juan/Desktop/finance_final/FinanzasApp/FinanzasApp.csproj",
+        "projectPath": "/Users/juan/Desktop/PI_FINANCE/backend/FinanzasApp/FinanzasApp.csproj",
         "packagesPath": "/Users/juan/.nuget/packages/",
-        "outputPath": "/Users/juan/Desktop/finance_final/FinanzasApp/obj/",
+        "outputPath": "/Users/juan/Desktop/PI_FINANCE/backend/FinanzasApp/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/juan/.nuget/NuGet/NuGet.Config"
