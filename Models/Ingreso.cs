@@ -47,6 +47,7 @@ public class AvailableResponse
     public decimal Disponible { get; set; }
     public string Moneda { get; set; } = "ARS";
     public decimal UsdcArs { get; set; }
+    public decimal BlueVenta { get; set; }
     public decimal TotalIngresosUsd { get; set; }
     public decimal TotalIngresosUsdArs { get; set; }
 }
