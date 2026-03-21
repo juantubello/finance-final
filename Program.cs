@@ -1,6 +1,7 @@
 ﻿using FinanzasApp.Database;
 using FinanzasApp.Endpoints;
 using FinanzasApp.Repositories;
+using FinanzasApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,7 @@ builder.Services.AddScoped<IngresosRepository>();
 builder.Services.AddScoped<AhorrosRepository>();
 builder.Services.AddScoped<CedearRepository>();
 
+builder.Services.AddSingleton<BbvaPdfParser>();
 builder.Services.AddHttpClient();
 
 builder.Services.AddCors(options =>
@@ -38,5 +40,6 @@ app.MapIngresosEndpoints();
 app.MapAhorrosEndpoints();
 app.MapAvailableEndpoints();
 app.MapCedearEndpoints();
+app.MapCardStatementsEndpoints();
 
 app.Run();
