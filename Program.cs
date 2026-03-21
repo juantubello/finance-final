@@ -20,6 +20,7 @@ builder.Services.AddScoped<CedearRepository>();
 
 builder.Services.AddScoped<CardStatementsRepository>();
 builder.Services.AddScoped<CardAdminRepository>();
+builder.Services.AddScoped<CardCategorizationService>();
 builder.Services.AddSingleton<BbvaPdfParser>();
 builder.Services.AddHttpClient();
 

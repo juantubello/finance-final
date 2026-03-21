@@ -1,5 +1,6 @@
 using FinanzasApp.Models;
 using FinanzasApp.Repositories;
+using FinanzasApp.Services;
 
 namespace FinanzasApp.Endpoints;
 
@@ -55,22 +56,32 @@ public static class CardAdminEndpoints
         app.MapGet("/cards/category-rules", async (CardAdminRepository repo) =>
             Results.Ok(await repo.GetCategoryRulesAsync()));
 
-        app.MapPost("/cards/category-rules", async (CardCategoryRuleUpsert body, CardAdminRepository repo) =>
+        app.MapPost("/cards/category-rules", async (CardCategoryRuleUpsert body, CardAdminRepository repo, CardCategorizationService categorizer) =>
         {
             var id = await repo.InsertCategoryRuleAsync(body);
+            await categorizer.ApplyRulesAsync();
             return Results.Created($"/cards/category-rules/{id}", new { id });
         });
 
-        app.MapPut("/cards/category-rules/{id}", async (int id, CardCategoryRuleUpsert body, CardAdminRepository repo) =>
+        app.MapPut("/cards/category-rules/{id}", async (int id, CardCategoryRuleUpsert body, CardAdminRepository repo, CardCategorizationService categorizer) =>
         {
             await repo.UpdateCategoryRuleAsync(id, body);
+            await categorizer.ApplyRulesAsync();
             return Results.Ok(new { id });
         });
 
-        app.MapDelete("/cards/category-rules/{id}", async (int id, CardAdminRepository repo) =>
+        app.MapDelete("/cards/category-rules/{id}", async (int id, CardAdminRepository repo, CardCategorizationService categorizer) =>
         {
             await repo.DeleteCategoryRuleAsync(id);
+            await categorizer.ApplyRulesAsync();
             return Results.NoContent();
+        });
+
+        // ── Manual backfill ──────────────────────────────────────────────────
+        app.MapPost("/cards/category-rules/apply", async (CardCategorizationService categorizer) =>
+        {
+            var updated = await categorizer.ApplyRulesAsync();
+            return Results.Ok(new { updated });
         });
 
         // ── Logo Rules ───────────────────────────────────────────────────────
