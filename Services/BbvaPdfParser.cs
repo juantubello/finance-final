@@ -92,6 +92,7 @@ public class BbvaPdfParser
         foreach (var page in doc.GetPages())
         {
             var words = page.GetWords()
+                .Where(w => w.TextOrientation == UglyToad.PdfPig.Content.TextOrientation.Horizontal)
                 .Select(w => (X: w.BoundingBox.Left, Y: w.BoundingBox.Bottom, Text: w.Text))
                 .OrderByDescending(w => w.Y) // arriba → abajo
                 .ToList();
