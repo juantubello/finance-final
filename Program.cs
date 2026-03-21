@@ -18,6 +18,8 @@ builder.Services.AddScoped<IngresosRepository>();
 builder.Services.AddScoped<AhorrosRepository>();
 builder.Services.AddScoped<CedearRepository>();
 
+builder.Services.AddScoped<CardStatementsRepository>();
+builder.Services.AddScoped<CardAdminRepository>();
 builder.Services.AddSingleton<BbvaPdfParser>();
 builder.Services.AddHttpClient();
 
@@ -41,5 +43,6 @@ app.MapAhorrosEndpoints();
 app.MapAvailableEndpoints();
 app.MapCedearEndpoints();
 app.MapCardStatementsEndpoints();
+app.MapCardAdminEndpoints();
 
 app.Run();

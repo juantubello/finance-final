@@ -1,5 +1,19 @@
 namespace FinanzasApp.Models;
 
+public record SaveCardStatementRequest
+{
+    public int CardId { get; init; }
+    public int StatementMonth { get; init; }
+    public int StatementYear { get; init; }
+    public string CloseDate { get; init; } = "";
+    public string DueDate { get; init; } = "";
+    public string? NextCloseDate { get; init; }
+    public string? NextDueDate { get; init; }
+    public long ExchangeRateUsd { get; init; }          // centavos: 1470.00 → 147000
+    public List<ParsedExpense> Expenses { get; init; } = [];
+}
+
+
 public record ParsedExpense
 {
     public string CardholderName { get; init; } = "";
