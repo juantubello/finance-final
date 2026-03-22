@@ -62,6 +62,19 @@ public class BbvaPdfParser
             var parts = closeDate.Split('-');
             statementYear  = int.Parse(parts[0]);
             statementMonth = int.Parse(parts[1]);
+            var closeDay   = int.Parse(parts[2]);
+
+            // Si el cierre cae en los primeros 10 días del mes, el resumen
+            // pertenece al mes anterior (ej: cierre 02/10 → resumen de septiembre)
+            if (closeDay <= 10)
+            {
+                statementMonth--;
+                if (statementMonth == 0)
+                {
+                    statementMonth = 12;
+                    statementYear--;
+                }
+            }
         }
 
         return new ParsedCardStatement
