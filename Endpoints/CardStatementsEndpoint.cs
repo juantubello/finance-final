@@ -87,7 +87,17 @@ public static class CardStatementsEndpoint
                 await pdf.CopyToAsync(fs);
 
             // 4. Insertar en DB
-            var statementId = await repo.InsertStatementAsync(req, fileName);
+            int statementId;
+            try
+            {
+                statementId = await repo.InsertStatementAsync(req, fileName);
+            }
+            catch (Microsoft.Data.Sqlite.SqliteException ex) when (ex.SqliteErrorCode == 19)
+            {
+                // UNIQUE constraint: ya existe un resumen para esta tarjeta/mes/año
+                if (File.Exists(filePath)) File.Delete(filePath);
+                return Results.Conflict("Ya existe un resumen para esta tarjeta en ese mes/año.");
+            }
 
             return Results.Ok(new { statementId, pdfPath = fileName });
         })
