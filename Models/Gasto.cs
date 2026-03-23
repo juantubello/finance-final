@@ -10,6 +10,7 @@ public class Gasto
     public int? CategoryId { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
+    public string? SenderDeviceId { get; set; }  // not persisted, used for push notifications
 }
 
 public class GastoResponse

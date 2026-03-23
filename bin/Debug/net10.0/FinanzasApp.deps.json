@@ -10,7 +10,8 @@
         "dependencies": {
           "Dapper": "2.1.72",
           "Microsoft.Data.Sqlite": "10.0.5",
-          "UglyToad.PdfPig": "1.7.0-custom-5"
+          "UglyToad.PdfPig": "1.7.0-custom-5",
+          "WebPush": "1.0.12"
         },
         "runtime": {
           "FinanzasApp.dll": {}
@@ -39,6 +40,22 @@
           "lib/net8.0/Microsoft.Data.Sqlite.dll": {
             "assemblyVersion": "10.0.5.0",
             "fileVersion": "10.0.526.15411"
+          }
+        }
+      },
+      "Newtonsoft.Json/10.0.3": {
+        "runtime": {
+          "lib/netstandard1.3/Newtonsoft.Json.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.3.21018"
+          }
+        }
+      },
+      "Portable.BouncyCastle/1.8.1.3": {
+        "runtime": {
+          "lib/netstandard2.0/BouncyCastle.Crypto.dll": {
+            "assemblyVersion": "1.8.1.0",
+            "fileVersion": "1.8.1.146"
           }
         }
       },
@@ -249,6 +266,18 @@
             "fileVersion": "0.1.8.0"
           }
         }
+      },
+      "WebPush/1.0.12": {
+        "dependencies": {
+          "Newtonsoft.Json": "10.0.3",
+          "Portable.BouncyCastle": "1.8.1.3"
+        },
+        "runtime": {
+          "lib/net5.0/WebPush.dll": {
+            "assemblyVersion": "1.0.11.0",
+            "fileVersion": "1.0.11.0"
+          }
+        }
       }
     }
   },
@@ -278,6 +307,20 @@
       "sha512": "sha512-jFYXnh7s0RShCw6Vkf+ReGCw+mVi7ISg1YaEzYCJcXnUifmbW+aqvCsRJuSRj2ZuQ+oqetpjxlZtbpMmk5FKqQ==",
       "path": "microsoft.data.sqlite.core/10.0.5",
       "hashPath": "microsoft.data.sqlite.core.10.0.5.nupkg.sha512"
+    },
+    "Newtonsoft.Json/10.0.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-hSXaFmh7hNCuEoC4XNY5DrRkLDzYHqPx/Ik23R4J86Z7PE/Y6YidhG602dFVdLBRSdG6xp9NabH3dXpcoxWvww==",
+      "path": "newtonsoft.json/10.0.3",
+      "hashPath": "newtonsoft.json.10.0.3.nupkg.sha512"
+    },
+    "Portable.BouncyCastle/1.8.1.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-1jUpszv0ETm+hl78HKnYgY3wPzt6qRtjxaPENNrGCuB8nondbR/j75WAKdd6sxXzOzBcX07WMZhZEYc4s5jVWg==",
+      "path": "portable.bouncycastle/1.8.1.3",
+      "hashPath": "portable.bouncycastle.1.8.1.3.nupkg.sha512"
     },
     "SQLitePCLRaw.bundle_e_sqlite3/2.1.11": {
       "type": "package",
@@ -341,6 +384,13 @@
       "sha512": "sha512-m/j5RVfL4eF/OwX6ASprzK+yzD3l7xdgQ7zQPgENhjxfuXD+hj6FSeZlmxSTt9ywvWcTCjGKAILl9XTK9iQgCQ==",
       "path": "uglytoad.pdfpig.tokens/1.7.0-custom-5",
       "hashPath": "uglytoad.pdfpig.tokens.1.7.0-custom-5.nupkg.sha512"
+    },
+    "WebPush/1.0.12": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-vc91Uby6UaQQijOPRY4B1tWFaQJlbfOyfOMIPpdAT6mANcPhHcvDJeLjr6B0Adjij71WIAH718MC7coQdrJZAw==",
+      "path": "webpush/1.0.12",
+      "hashPath": "webpush.1.0.12.nupkg.sha512"
     }
   }
 }

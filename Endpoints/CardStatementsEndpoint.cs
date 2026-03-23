@@ -2,6 +2,7 @@ using System.Text.Json;
 using FinanzasApp.Models;
 using FinanzasApp.Repositories;
 using FinanzasApp.Services;
+using WebPush;
 
 namespace FinanzasApp.Endpoints;
 
@@ -44,7 +45,8 @@ public static class CardStatementsEndpoint
             IFormCollection form,
             BbvaPdfParser parser,
             CardStatementsRepository repo,
-            IConfiguration config) =>
+            IConfiguration config,
+            WebPushService pushService) =>
         {
             // 1. Archivo PDF
             var pdf = form.Files.GetFile("pdf");
@@ -98,6 +100,16 @@ public static class CardStatementsEndpoint
                 if (File.Exists(filePath)) File.Delete(filePath);
                 return Results.Conflict("Ya existe un resumen para esta tarjeta en ese mes/año.");
             }
+
+            // Fire-and-forget push notification
+            var expCount = req.Expenses.Count;
+            var month    = req.StatementMonth;
+            var year     = req.StatementYear;
+            _ = Task.Run(() => pushService.SendAsync(
+                req.SenderDeviceId,
+                "Nuevo resumen — {alias}",
+                $"Resumen {month:D2}/{year} · {expCount} gastos",
+                "/tarjetas"));
 
             return Results.Ok(new { statementId, pdfPath = fileName });
         })

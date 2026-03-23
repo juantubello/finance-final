@@ -11,6 +11,7 @@ public record SaveCardStatementRequest
     public string? NextDueDate { get; init; }
     public long ExchangeRateUsd { get; init; }          // centavos: 1470.00 → 147000
     public List<ParsedExpense> Expenses { get; init; } = [];
+    public string? SenderDeviceId { get; init; }        // not persisted, used for push notifications
 }
 
 

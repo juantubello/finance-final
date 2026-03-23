@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "JYMWftA2V/I=",
+  "dgSpecHash": "/Fr/Zx3Mo28=",
   "success": true,
   "projectFilePath": "/Users/juan/Desktop/PI_FINANCE/backend/FinanzasApp/FinanzasApp.csproj",
   "expectedPackageFiles": [
@@ -8,6 +8,10 @@
     "/Users/juan/.nuget/packages/microsoft.data.sqlite/10.0.5/microsoft.data.sqlite.10.0.5.nupkg.sha512",
     "/Users/juan/.nuget/packages/microsoft.data.sqlite.core/10.0.5/microsoft.data.sqlite.core.10.0.5.nupkg.sha512",
     "/Users/juan/.nuget/packages/microsoft.extensions.configuration.json/10.0.5/microsoft.extensions.configuration.json.10.0.5.nupkg.sha512",
+    "/Users/juan/.nuget/packages/microsoft.netcore.platforms/1.1.0/microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "/Users/juan/.nuget/packages/netstandard.library/1.6.1/netstandard.library.1.6.1.nupkg.sha512",
+    "/Users/juan/.nuget/packages/newtonsoft.json/10.0.3/newtonsoft.json.10.0.3.nupkg.sha512",
+    "/Users/juan/.nuget/packages/portable.bouncycastle/1.8.1.3/portable.bouncycastle.1.8.1.3.nupkg.sha512",
     "/Users/juan/.nuget/packages/sqlitepclraw.bundle_e_sqlite3/2.1.11/sqlitepclraw.bundle_e_sqlite3.2.1.11.nupkg.sha512",
     "/Users/juan/.nuget/packages/sqlitepclraw.core/2.1.11/sqlitepclraw.core.2.1.11.nupkg.sha512",
     "/Users/juan/.nuget/packages/sqlitepclraw.lib.e_sqlite3/2.1.11/sqlitepclraw.lib.e_sqlite3.2.1.11.nupkg.sha512",
@@ -16,7 +20,8 @@
     "/Users/juan/.nuget/packages/uglytoad.pdfpig.core/1.7.0-custom-5/uglytoad.pdfpig.core.1.7.0-custom-5.nupkg.sha512",
     "/Users/juan/.nuget/packages/uglytoad.pdfpig.fonts/1.7.0-custom-5/uglytoad.pdfpig.fonts.1.7.0-custom-5.nupkg.sha512",
     "/Users/juan/.nuget/packages/uglytoad.pdfpig.tokenization/1.7.0-custom-5/uglytoad.pdfpig.tokenization.1.7.0-custom-5.nupkg.sha512",
-    "/Users/juan/.nuget/packages/uglytoad.pdfpig.tokens/1.7.0-custom-5/uglytoad.pdfpig.tokens.1.7.0-custom-5.nupkg.sha512"
+    "/Users/juan/.nuget/packages/uglytoad.pdfpig.tokens/1.7.0-custom-5/uglytoad.pdfpig.tokens.1.7.0-custom-5.nupkg.sha512",
+    "/Users/juan/.nuget/packages/webpush/1.0.12/webpush.1.0.12.nupkg.sha512"
   ],
   "logs": [
     {
@@ -27,6 +32,18 @@
       "warningLevel": 1,
       "filePath": "/Users/juan/Desktop/PI_FINANCE/backend/FinanzasApp/FinanzasApp.csproj",
       "libraryId": "Microsoft.Extensions.Configuration.Json",
+      "targetGraphs": [
+        "net10.0"
+      ]
+    },
+    {
+      "code": "NU1903",
+      "level": "Warning",
+      "message": "Package 'Newtonsoft.Json' 10.0.3 has a known high severity vulnerability, https://github.com/advisories/GHSA-5crp-9r3c-p9vr",
+      "projectPath": "/Users/juan/Desktop/PI_FINANCE/backend/FinanzasApp/FinanzasApp.csproj",
+      "warningLevel": 1,
+      "filePath": "/Users/juan/Desktop/PI_FINANCE/backend/FinanzasApp/FinanzasApp.csproj",
+      "libraryId": "Newtonsoft.Json",
       "targetGraphs": [
         "net10.0"
       ]

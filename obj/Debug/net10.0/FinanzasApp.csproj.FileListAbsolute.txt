@@ -67,6 +67,8 @@
 /Users/juan/Desktop/PI_FINANCE/backend/FinanzasApp/bin/Debug/net10.0/FinanzasApp.pdb
 /Users/juan/Desktop/PI_FINANCE/backend/FinanzasApp/bin/Debug/net10.0/Dapper.dll
 /Users/juan/Desktop/PI_FINANCE/backend/FinanzasApp/bin/Debug/net10.0/Microsoft.Data.Sqlite.dll
+/Users/juan/Desktop/PI_FINANCE/backend/FinanzasApp/bin/Debug/net10.0/Newtonsoft.Json.dll
+/Users/juan/Desktop/PI_FINANCE/backend/FinanzasApp/bin/Debug/net10.0/BouncyCastle.Crypto.dll
 /Users/juan/Desktop/PI_FINANCE/backend/FinanzasApp/bin/Debug/net10.0/SQLitePCLRaw.batteries_v2.dll
 /Users/juan/Desktop/PI_FINANCE/backend/FinanzasApp/bin/Debug/net10.0/SQLitePCLRaw.core.dll
 /Users/juan/Desktop/PI_FINANCE/backend/FinanzasApp/bin/Debug/net10.0/SQLitePCLRaw.provider.e_sqlite3.dll
@@ -75,6 +77,7 @@
 /Users/juan/Desktop/PI_FINANCE/backend/FinanzasApp/bin/Debug/net10.0/UglyToad.PdfPig.Fonts.dll
 /Users/juan/Desktop/PI_FINANCE/backend/FinanzasApp/bin/Debug/net10.0/UglyToad.PdfPig.Tokenization.dll
 /Users/juan/Desktop/PI_FINANCE/backend/FinanzasApp/bin/Debug/net10.0/UglyToad.PdfPig.Tokens.dll
+/Users/juan/Desktop/PI_FINANCE/backend/FinanzasApp/bin/Debug/net10.0/WebPush.dll
 /Users/juan/Desktop/PI_FINANCE/backend/FinanzasApp/bin/Debug/net10.0/runtimes/browser-wasm/nativeassets/net9.0/e_sqlite3.a
 /Users/juan/Desktop/PI_FINANCE/backend/FinanzasApp/bin/Debug/net10.0/runtimes/linux-arm/native/libe_sqlite3.so
 /Users/juan/Desktop/PI_FINANCE/backend/FinanzasApp/bin/Debug/net10.0/runtimes/linux-arm64/native/libe_sqlite3.so
