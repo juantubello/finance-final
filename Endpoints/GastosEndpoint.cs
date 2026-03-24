@@ -23,7 +23,7 @@ public static class GastosEndpoints
         app.MapGet("/gastos/categorias/rango", async (int yearFrom, int monthFrom, int yearTo, int monthTo, GastosRepository repo) =>
         Results.Ok(await repo.GetGastosByCategoriesRange(yearFrom, monthFrom, yearTo, monthTo)));
 
-        app.MapPost("/gastos", async (Gasto gasto, GastosRepository repo, WebPushService pushService) =>
+        app.MapPost("/gastos", async (Gasto gasto, GastosRepository repo, CategoriasRepository categoriasRepo, WebPushService pushService) =>
         {
             await repo.AgregarGasto(gasto);
 
@@ -31,10 +31,12 @@ public static class GastosEndpoints
             var senderDeviceId = gasto.SenderDeviceId;
             var description    = gasto.Description;
             var amount         = gasto.Amount;
+            var icono          = await categoriasRepo.GetIconoAsync(gasto.CategoryId);
+            var bodyPrefix     = icono is not null ? $"{icono} " : "";
             _ = Task.Run(() => pushService.SendAsync(
                 senderDeviceId,
                 "Nuevo gasto — {alias}",
-                $"{description}: $ {amount:N2}",
+                $"{bodyPrefix}{description}: $ {amount:N2}",
                 "/"));
 
             return Results.Created($"/gastos/{gasto.Id}", gasto);

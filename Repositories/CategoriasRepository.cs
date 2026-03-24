@@ -73,4 +73,12 @@ public class CategoriasRepository
         var categoria = await con.QueryFirstOrDefaultAsync<Categorias>(sql, new { Id = id });
         return categoria;
     }
+
+    public async Task<string?> GetIconoAsync(int? categoryId)
+    {
+        if (categoryId is null) return null;
+        using var con = _conexionDB.Abrir();
+        return await con.ExecuteScalarAsync<string?>(
+            "SELECT icono FROM categorias WHERE id = @Id", new { Id = categoryId });
+    }
 }
