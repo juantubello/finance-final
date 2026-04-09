@@ -49,12 +49,13 @@ public class GastosRepository
         return gastos;
     }
 
-    public async Task AgregarGasto(Gasto gasto)
+    public async Task<int> AgregarGasto(Gasto gasto)
     {
         using var con = _conexionDB.Abrir();
         var sql = @"INSERT INTO gastos (fecha_hora, descripcion, importe, moneda_id, categoria_id, created_at, updated_at)
-                    VALUES (@FechaHora, @Descripcion, @Importe, @MonedaId, @CategoriaId, @CreatedAt, @UpdatedAt)";
-        await con.ExecuteAsync(sql, new
+                    VALUES (@FechaHora, @Descripcion, @Importe, @MonedaId, @CategoriaId, @CreatedAt, @UpdatedAt);
+                    SELECT last_insert_rowid();";
+        var id = await con.ExecuteScalarAsync<long>(sql, new
         {
             FechaHora   = gasto.DateTime,
             Descripcion = gasto.Description,
@@ -64,6 +65,8 @@ public class GastosRepository
             CreatedAt   = DateTime.UtcNow,
             UpdatedAt   = DateTime.UtcNow
         });
+
+        return (int)id;
     }
 
     public async Task ActualizarGasto(Gasto gasto)

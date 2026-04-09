@@ -23,9 +23,15 @@ public static class GastosEndpoints
         app.MapGet("/gastos/categorias/rango", async (int yearFrom, int monthFrom, int yearTo, int monthTo, GastosRepository repo) =>
         Results.Ok(await repo.GetGastosByCategoriesRange(yearFrom, monthFrom, yearTo, monthTo)));
 
-        app.MapPost("/gastos", async (Gasto gasto, GastosRepository repo, CategoriasRepository categoriasRepo, WebPushService pushService) =>
+        app.MapPost("/gastos", async (Gasto gasto, GastosRepository repo, LabelsRepository labelsRepo, CategoriasRepository categoriasRepo, LabelRulesService labelRulesService, WebPushService pushService) =>
         {
-            await repo.AgregarGasto(gasto);
+            var manualLabelIds = ExtractManualLabelIds(gasto);
+            if (!await labelsRepo.ExistenLabels(manualLabelIds))
+                return Results.BadRequest(new { error = "Uno o más labels enviados no existen." });
+
+            gasto.Id = await repo.AgregarGasto(gasto);
+            await labelsRepo.AsociarLabelsExistentesAGasto(gasto.Id, manualLabelIds);
+            await labelRulesService.ApplyToGastoAsync(gasto.Id, gasto.Description);
 
             // Fire-and-forget push notification
             var senderDeviceId = gasto.SenderDeviceId;
@@ -39,14 +45,27 @@ public static class GastosEndpoints
                 $"{bodyPrefix}{description}: $ {amount:N2}",
                 "/"));
 
-            return Results.Created($"/gastos/{gasto.Id}", gasto);
+            var created = await repo.ObtenerGastoPorId(gasto.Id);
+            return created is null
+                ? Results.Created($"/gastos/{gasto.Id}", gasto)
+                : Results.Created($"/gastos/{gasto.Id}", created);
         });
 
-        app.MapPut("/gastos/{id}", async (int id, Gasto gasto, GastosRepository repo) =>
+        app.MapPut("/gastos/{id}", async (int id, Gasto gasto, GastosRepository repo, LabelsRepository labelsRepo, LabelRulesService labelRulesService) =>
         {
+            var manualLabelIds = ExtractManualLabelIds(gasto);
+            if (!await labelsRepo.ExistenLabels(manualLabelIds))
+                return Results.BadRequest(new { error = "Uno o más labels enviados no existen." });
+
             gasto.Id = id;
             await repo.ActualizarGasto(gasto);
-            return Results.Ok(gasto);
+            await labelsRepo.AsociarLabelsExistentesAGasto(gasto.Id, manualLabelIds);
+            await labelRulesService.ApplyToGastoAsync(gasto.Id, gasto.Description);
+
+            var updated = await repo.ObtenerGastoPorId(gasto.Id);
+            return updated is null
+                ? Results.Ok(gasto)
+                : Results.Ok(updated);
         });
 
         app.MapDelete("/gastos/{id}", async (int id, GastosRepository repo) =>
@@ -54,5 +73,13 @@ public static class GastosEndpoints
             await repo.EliminarGasto(id);
             return Results.NoContent();
         });
+    }
+
+    private static List<int> ExtractManualLabelIds(Gasto gasto)
+    {
+        return gasto.LabelIds
+            .Concat(gasto.Labels.Where(label => label.Id > 0).Select(label => label.Id))
+            .Distinct()
+            .ToList();
     }
 }

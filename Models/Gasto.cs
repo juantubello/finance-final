@@ -8,6 +8,8 @@ public class Gasto
     public decimal Amount { get; set; }
     public int CurrencyId { get; set; }
     public int? CategoryId { get; set; }
+    public List<int> LabelIds { get; set; } = new();
+    public List<Label> Labels { get; set; } = new();
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
     public string? SenderDeviceId { get; set; }  // not persisted, used for push notifications

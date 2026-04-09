@@ -6,6 +6,11 @@ public class Label
     public string Name { get; set; } = string.Empty;
 }
 
+public class LabelUpsertRequest
+{
+    public string Name { get; set; } = string.Empty;
+}
+
 public class AgregarLabelsRequest
 {
     public List<string> Labels { get; set; } = new();
